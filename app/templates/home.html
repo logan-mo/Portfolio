@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Welcome to Muhammad Luqman's Portfolio</h1>
-<p>This is the homepage.</p>
+<div class="p-5 mb-4 bg-body-tertiary rounded-3 shadow-sm">
+  <div class="container-fluid py-4">
+    <h1 class="display-5 fw-bold">Welcome to My Portfolio</h1>
+    <p class="col-md-10 fs-4">I'm Muhammad Luqman — a Backend & AI Engineer passionate about building reliable, scalable systems and intelligent applications. Explore my work and get in touch!</p>
+    <a href="{{ url_for('projects') }}" class="btn btn-primary btn-lg mt-3" type="button">View My Projects</a>
+    <a href="{{ url_for('about') }}" class="btn btn-outline-secondary btn-lg mt-3" type="button">About Me</a>
+  </div>
+</div>
 {% endblock %}

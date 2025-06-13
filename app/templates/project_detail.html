@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4"> {# Common container for padding and centering content sections #}
+  <h1 class="mb-4 text-center display-5 fw-bold">{{ project.title if project else "Project Details" }}</h1>
+
+  {# Check project.view_type to determine layout #}
+  {% if project.view_type == 'video' %}
+    {# Video Demo View #}
+    <div class="row justify-content-center">
+      <div class="col-lg-10 col-xl-8">
+        {# Video Player #}
+        <div class="mb-4 shadow-lg rounded overflow-hidden"> {# Increased shadow for emphasis #}
+          {% if project.video_link and ('youtube.com/embed' in project.video_link or 'youtu.be/' in project.video_link) %}
+            {# Assumes project.video_link is a YouTube embed URL #}
+            <div class="ratio ratio-16x9">
+              <iframe src="{{ project.video_link }}" title="{{ project.title }} Video" allowfullscreen></iframe>
+            </div>
+          {% elif project.video_link and (project.video_link.endswith('.mp4') or project.video_link.endswith('.webm') or project.video_link.endswith('.ogv')) %}
+            {# Direct video file (e.g., from GCS) #}
+            <div class="ratio ratio-16x9">
+                <video controls title="{{ project.title }} Video" style="background-color: #000;"> {# Background for letterboxing #}
+                    <source src="{{ project.video_link }}" type="video/mp4"> {# Adjust type if needed, or let browser infer #}
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+          {% elif project.video_link %}
+            <p class="text-center alert alert-info m-0">Video link provided, but format might not be directly embeddable or is unsupported. Link: <a href="{{ project.video_link }}" target="_blank" rel="noopener noreferrer">{{ project.video_link }}</a></p>
+          {% else %}
+            <p class="text-center alert alert-warning m-0">No video link provided for this project.</p>
+          {% endif %}
+        </div>
+
+        {# Project Description (Markdown Rendered) #}
+        {% if project.description_markdown %}
+        <div class="project-description card shadow-sm mt-4">
+          <div class="card-body">
+            <h4 class="card-title">About This Project</h4>
+            <div class="markdown-content" id="video-project-description">
+              {{ project.description_markdown }}
+            </div>
+            {# For Markdown rendering:
+               Option 1 (Backend): Pre-render markdown to HTML in your Flask view
+                                (e.g., using Markdown library) and pass it as `project.description_html`.
+                                Then use: <div class="markdown-rendered">{{ project.description_html | safe }}</div>
+               Option 2 (Frontend): Use a JavaScript library like Marked.js.
+                                 Include Marked.js in your base.html or here. Then:
+                                 <script>
+                                   if (typeof marked !== 'undefined') {
+                                     const descElement = document.getElementById('video-project-description');
+                                     if (descElement) { descElement.innerHTML = marked.parse(descElement.textContent || ''); }
+                                   }
+                                 </script>
+            #}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+  {% elif project.view_type == 'pseudo_demo' %}
+    {# Pseudo Live-Demo View #}
+    {# Project title is already rendered at the top of the content block #}
+    <div class="row">
+      {# Samples Column #}
+      <div class="col-lg-3 col-md-4 mb-3 mb-md-0">
+        <h4 class="mb-3">Demo Samples</h4>
+        <div class="list-group shadow-sm" id="sample-list">
+          {% if project.samples %}
+            {% for sample in project.samples %}
+              {# Resolve URL: Use url_for for relative static paths, otherwise use as is #}
+              {% set output_url = sample.output_url %}
+              {% if output_url and not (output_url.startswith('http://') or output_url.startswith('https://') or output_url.startswith('/')) %}
+                {% set resolved_output_url = url_for('static', filename=output_url) %}
+              {% else %}
+                {% set resolved_output_url = output_url %}
+              {% endif %}
+
+              {% set thumb_url = sample.thumbnail_url %}
+              {% if thumb_url and not (thumb_url.startswith('http://') or thumb_url.startswith('https://') or thumb_url.startswith('/')) %}
+                {% set resolved_thumb_url = url_for('static', filename=thumb_url) %}
+              {% else %}
+                {% set resolved_thumb_url = thumb_url %}
+              {% endif %}
+
+              <a href="#" class="list-group-item list-group-item-action pseudo-sample-item d-flex align-items-center"
+                 data-output-url="{{ resolved_output_url }}"
+                 data-output-type="{{ sample.output_type | lower }}">
+                {% if resolved_thumb_url %}
+                  <img src="{{ resolved_thumb_url }}" alt="{{ sample.name }} thumbnail" class="img-thumbnail me-2" style="width: 40px; height: 40px; object-fit: cover;">
+                {% endif %}
+                <span class="flex-grow-1">{{ sample.name }}</span>
+              </a>
+            {% endfor %}
+          {% else %}
+            <p class="text-muted p-2">No samples available for this demo.</p>
+          {% endif %}
+        </div>
+      </div>
+
+      {# Demo Output Column #}
+      <div class="col-lg-9 col-md-8">
+        <h4 class="mb-3">Demo Output</h4>
+        <div id="pseudo-demo-output" class="border p-3 text-center bg-body-tertiary rounded shadow-sm" style="min-height: 400px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+          <p class="text-muted">Select a sample from the left to view the demo.</p>
+        </div>
+      </div>
+    </div>
+
+    {# Project Description (Markdown Rendered) #}
+    {% if project.description_markdown %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="project-description card shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title">About This Project</h4>
+                    <div class="markdown-content" id="pseudo-project-description">
+                        {{ project.description_markdown }}
+                    </div>
+                    {# For Markdown rendering, see notes in the 'video' view type section. #}
+                    {# Target 'pseudo-project-description' with JS if rendering client-side. #}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+  {% else %}
+    {# Fallback or Error if project.view_type is not set or unknown #}
+    <div class="alert alert-warning" role="alert">
+      This project's detail view is not configured correctly, or the project data is incomplete.
+      {% if project and project.slug %}
+        Please check the configuration for project: <strong>{{ project.slug }}</strong>.
+      {% endif %}
+    </div>
+    {% if project %}
+    <div class="card mt-3 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">Project Information</h5>
+            <p class="card-text"><strong>Title:</strong> {{ project.title | default('N/A') }}</p>
+            <p><strong>Slug:</strong> {{ project.slug | default('N/A') }}</p>
+            {% if project.logo %}
+            <p><strong>Logo:</strong> <img src="{{ url_for('static', filename=project.logo) }}" alt="{{ project.title }} Logo" style="max-height:50px; vertical-align: middle;"></p>
+            {% endif %}
+            <p class="text-muted">A specific detail view (Video or Pseudo-Demo) could not be rendered for this project.</p>
+        </div>
+    </div>
+    {% endif %}
+  {% endif %}
+</div> {# End of common container .mt-4 #}
+
+{% if project.view_type == 'pseudo_demo' and project.samples %}
+{# JavaScript for Pseudo Demo Interactivity - only include if relevant and samples exist #}
+{% include 'partials/_pseudo_demo_js.html' %} {# Assuming JS is moved to a partial #}
+{% endif %} {# End of script for pseudo_demo #}
+
+{% endblock %}

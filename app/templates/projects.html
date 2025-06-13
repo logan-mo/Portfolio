@@ -1,5 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Welcome to Muhammad Luqman's Portfolio</h1>
-<p>This is the projects page.</p>
+<h1 class="mb-4 display-6">My Projects</h1>
+<div class="row">
+  {% for project in projects %}
+  <div class="col-lg-4 col-md-6 mb-4">
+    <div class="card shadow-sm h-100">
+      <img src="{{ url_for('static', filename=project.logo) }}" class="card-img-top p-4" alt="{{ project.title }} Logo" style="height:120px;object-fit:contain;">
+      <div class="card-body">
+        <h5 class="card-title">{{ project.title }}</h5>
+        <a href="{{ url_for('project_detail', slug=project.slug) }}" class="btn btn-primary">View Details</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
 {% endblock %}

@@ -1,0 +1,87 @@
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const sampleListContainer = document.getElementById('sample-list');
+    const demoOutputContainer = document.getElementById('pseudo-demo-output');
+    let currentMediaElement = null; // To manage video/audio pause
+
+    if (!sampleListContainer || !demoOutputContainer) {
+        return;
+    }
+    const sampleItems = sampleListContainer.querySelectorAll('.pseudo-sample-item');
+
+    if (sampleItems.length > 0) {
+      // Activate and display the first sample by default
+      const firstSample = sampleItems[0];
+      if (firstSample && firstSample.dataset.outputUrl && firstSample.dataset.outputType) {
+          firstSample.classList.add('active');
+          updateDemoOutput(
+              firstSample.dataset.outputUrl,
+              firstSample.dataset.outputType.toLowerCase()
+          );
+      }
+
+      sampleItems.forEach(item => {
+        item.addEventListener('click', function (event) {
+          event.preventDefault();
+          if (this.classList.contains('active')) return;
+
+          if (currentMediaElement && typeof currentMediaElement.pause === 'function') {
+              currentMediaElement.pause();
+          }
+
+          sampleItems.forEach(s => s.classList.remove('active'));
+          this.classList.add('active');
+
+          const outputUrl = this.dataset.outputUrl;
+          const outputType = this.dataset.outputType.toLowerCase();
+          updateDemoOutput(outputUrl, outputType);
+        });
+      });
+    } else {
+        if(demoOutputContainer.querySelector('p')) { // If placeholder text exists
+            demoOutputContainer.querySelector('p').textContent = 'No samples are available for this demo.';
+        }
+    }
+
+    function updateDemoOutput(url, type) {
+      demoOutputContainer.innerHTML = '';
+      currentMediaElement = null;
+
+      if (!url || !type) {
+        demoOutputContainer.innerHTML = '<p class="text-danger">Error: Output data missing for this sample.</p>';
+        return;
+      }
+
+      if (type === 'image') {
+        const img = document.createElement('img');
+        img.src = url;
+        img.alt = "Demo Output Image";
+        img.classList.add('img-fluid', 'rounded');
+        img.style.maxHeight = '500px';
+        img.style.maxWidth = '100%';
+        demoOutputContainer.appendChild(img);
+        currentMediaElement = img;
+      } else if (type === 'video') {
+        const video = document.createElement('video');
+        video.src = url;
+        video.controls = true;
+        video.classList.add('img-fluid', 'rounded');
+        video.style.maxHeight = '500px';
+        video.style.maxWidth = '100%';
+        video.autoplay = false; // User should initiate play
+        demoOutputContainer.appendChild(video);
+        currentMediaElement = video;
+      } else {
+        demoOutputContainer.innerHTML = `<p class="text-warning">Unsupported output type: ${type}. Cannot display <a href="${url}" target="_blank" rel="noopener noreferrer">link</a>.</p>`;
+      }
+    }
+
+    // Optional: Client-side Markdown rendering for pseudo-demo description
+    // if (typeof marked !== 'undefined') {
+    //   const markdownDescElement = document.getElementById('pseudo-project-description');
+    //   if (markdownDescElement) {
+    //     markdownDescElement.innerHTML = marked.parse(markdownDescElement.textContent || '');
+    //   }
+    // }
+  });
+</script>
