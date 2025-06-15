@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Blog{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">My Blog</h1>
+    {% if posts %}
+        <div class="timeline">
+            {% for post in posts %}
+            <div class="timeline-item mb-4">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content card">
+                    <div class="card-body">
+                        <h2 class="card-title"><a href="{{ url_for('blog_post_detail', slug=post.slug) }}">{{ post.title }}</a></h2>
+                        <p class="card-subtitle mb-2 text-muted">
+                            Published on: {{ post.date_obj.strftime('%B %d, %Y') }}
+                            {% if post.author %}
+                                | By: {{ post.author }}
+                            {% endif %}
+                        </p>
+                        {% if post.summary %}
+                            <p class="card-text">{{ post.summary }}</p>
+                        {% else %}
+                            {# Fallback to a truncated version of the content if no summary #}
+                            <p class="card-text">{{ post.content_html | striptags | truncate(200) }}</p>
+                        {% endif %}
+                        <a href="{{ url_for('blog_post_detail', slug=post.slug) }}" class="btn btn-sm btn-outline-primary">Read More &rarr;</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No blog posts yet. Stay tuned!</p>
+    {% endif %}
+</div>
+
+<style>
+/* Basic timeline styling (you can move this to your main CSS file) */
+.timeline { position: relative; padding-left: 40px; border-left: 2px solid #007bff; }
+.timeline-item { position: relative; margin-bottom: 20px; }
+.timeline-marker {
+    position: absolute; left: -11px; top: 5px; width: 20px; height: 20px;
+    border-radius: 50%; background-color: #fff; border: 2px solid #007bff;
+}
+.timeline-content { margin-left: 10px; }
+</style>
+{% endblock %}

@@ -1,11 +1,43 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="p-5 mb-4 bg-body-tertiary rounded-3 shadow-sm">
-  <div class="container-fluid py-4">
-    <h1 class="display-5 fw-bold">Welcome to My Portfolio</h1>
-    <p class="col-md-10 fs-4">I'm Muhammad Luqman — a Backend & AI Engineer passionate about building reliable, scalable systems and intelligent applications. Explore my work and get in touch!</p>
-    <a href="{{ url_for('projects') }}" class="btn btn-primary btn-lg mt-3" type="button">View My Projects</a>
-    <a href="{{ url_for('about') }}" class="btn btn-outline-secondary btn-lg mt-3" type="button">About Me</a>
+
+{# Hero Section: Enhanced for visual impact and clarity #}
+{# This block sits inside <main class="container py-4 py-md-5"> from base.html #}
+{# So, bg-light will be a card-like element within the main content area. #}
+<div class="text-center bg-light rounded-3 shadow-lg p-4 p-md-5 mb-5">
+    <h1 class="display-3 fw-bolder mb-3">Muhammad Luqman</h1>
+    <p class="fs-4 text-muted mb-3 col-md-10 col-lg-8 mx-auto">
+        Backend & AI Engineer
+    </p>
+    <p class="lead col-md-10 col-lg-8 mx-auto mb-4">
+        Passionate about building reliable, scalable systems and intelligent applications. Explore my work and get in touch!
+    </p>
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <a href="{{ url_for('projects') }}" class="btn btn-primary btn-lg px-4 me-sm-2">View My Projects</a>
+        <a href="{{ url_for('about') }}" class="btn btn-outline-secondary btn-lg px-4">About Me</a>
+    </div>
   </div>
+
+{# "Fresh from the Blog" Section: Made more distinct and inviting #}
+{# This section is now separate from the hero block for better page structure. #}
+{# It also sits inside <main class="container py-4 py-md-5"> #}
+{# The py-5 here adds vertical spacing relative to the hero block above and footer below. #}
+<div class="text-center py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-7"> {# Constrain width a bit more for focused text #}
+            <h2 class="display-5 fw-bold mb-3">Fresh from the Blog</h2>
+            <p class="fs-5 text-muted mb-4">
+                Check out my latest articles, tutorials, and thoughts on technology and development.
+            </p>
+            <a href="{{ url_for('blog') }}" class="btn btn-success btn-lg px-4">
+                Read My Blog
+                {# Simple inline SVG for an arrow icon, avoids external dependencies for one icon #}
+                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-arrow-right-short ms-1 align-text-bottom" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"/>
+                </svg>
+            </a>
+        </div>
+    </div>
 </div>
+
 {% endblock %}

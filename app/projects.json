@@ -1,0 +1,59 @@
+[
+    {
+        "slug": "ai-chatbot",
+        "title": "AI Chatbot",
+        "logo": "img/logos/miku.jpeg",
+        "view_type": "video",
+        "video_link": "https://www.youtube.com/embed/dQw4w9WgXcQ?si=lEFaTBriE7Urk9WU",
+        "description_markdown": "An AI-powered chatbot using Large Language Models (LLMs) and a Flask backend.\n\n**Key Features:**\n*   Intent Recognition\n*   Contextual Memory\n*   API Integration for external services\n*   Scalable architecture",
+        "github": "https://github.com/luqman/ai-chatbot",
+        "demo": "https://ai-chatbot-demo.example.com"
+    },
+    {
+        "slug": "portfolio-website",
+        "title": "Portfolio Website",
+        "logo": "img/logos/miku.jpeg",
+        "view_type": "pseudo_demo",
+        "description_markdown": "My personal portfolio website, built with Python (Flask) and Bootstrap 5.\n\n**Highlights:**\n*   Responsive design for all devices.\n*   Dynamic project showcase (you're looking at it!).\n*   Clean and modern UI.",
+        "samples": [
+            {
+                "name": "Homepage View",
+                "thumbnail_url": "img/logos/miku.jpeg",
+                "output_url": "img/samples/rem.jpg",
+                "output_type": "image"
+            },
+            {
+                "name": "Projects Page",
+                "thumbnail_url": "img/logos/miku.jpeg",
+                "output_url": "img/samples/rem.jpg",
+                "output_type": "image"
+            }
+        ],
+        "github": "https://github.com/luqman/portfolio",
+        "demo": ""
+    },
+    {
+        "slug": "data-pipeline",
+        "title": "Data Pipeline",
+        "logo": "img/logos/miku.jpeg",
+        "view_type": "video",
+        "video_link": "https://www.youtube.com/embed/dQw4w9WgXcQ?si=lEFaTBriE7Urk9WU",
+        "description_markdown": "An ETL (Extract, Transform, Load) pipeline designed for processing and managing large datasets efficiently.\n\n**Technologies Used:**\n*   Python for scripting and data manipulation.\n*   Apache Airflow for workflow orchestration.\n*   Integration with various data sources and destinations.",
+        "github": "",
+        "demo": ""
+    },
+    {
+        "slug": "cv-object-detection",
+        "title": "CV Object Detection Demo",
+        "logo": "img/logos/miku.jpeg",
+        "view_type": "pseudo_demo",
+        "description_markdown": "\nA pseudo-live demo showcasing an object detection model. Select different input images or short video clips to see the model's output.\nThis demonstrates the model's capability to identify and locate various objects within a scene.",
+        "samples": [
+            {"name": "Street Scene (Image)", "thumbnail_url": "img/logos/miku.jpeg", "output_url": "img/samples/rem.jpg", "output_type": "image"},
+            {"name": "Traffic Flow (Video)", "thumbnail_url": "img/logos/miku.jpeg", "output_url": "https://www.youtube.com/embed/dQw4w9WgXcQ?si=lEFaTBriE7Urk9WU", "output_type": "video"},
+            {"name": "Indoor Objects (Image)", "thumbnail_url": "img/logos/miku.jpeg", "output_url": "img/samples/rem.jpg", "output_type": "image"}
+        ],
+        "github": "https://github.com/luqman/cv-object-detection",
+        "demo": ""
+    }
+]
